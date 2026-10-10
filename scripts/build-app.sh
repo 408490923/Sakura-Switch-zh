@@ -50,7 +50,7 @@ cp "${BUILD_DIR}/${EXECUTABLE_NAME}" "${MACOS_DIR}/${EXECUTABLE_NAME}"
 chmod +x "${MACOS_DIR}/${EXECUTABLE_NAME}"
 
 # Bundle localized strings in the standard macOS app location.
-for lang in ru en ja; do
+for lang in ru en ja zh-Hans; do
     SOURCE_LPROJ="$ROOT_DIR/Sources/SakuraSwitch/Resources/${lang}.lproj"
     TARGET_LPROJ="${RESOURCES_DIR}/${lang}.lproj"
 
@@ -224,6 +224,7 @@ cat > "${CONTENTS_DIR}/Info.plist" <<PLIST
         <string>ru</string>
         <string>en</string>
         <string>ja</string>
+        <string>zh-Hans</string>
     </array>
     <key>CFBundleIconFile</key>
     <string>SakuraSwitch.icns</string>

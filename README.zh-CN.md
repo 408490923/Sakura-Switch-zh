@@ -4,7 +4,7 @@
 
 # 🌸 Sakura Switch
 
-### 原生 macOS 版 Nintendo Switch 工具箱（简体中文版）
+### 原生 macOS 版 Nintendo Switch 工具箱
 
 <p>
   <img src="https://img.shields.io/badge/macOS-15%2B-black?logo=apple" alt="macOS 15+">
@@ -25,7 +25,7 @@
 
 ---
 
-> **关于本仓库**：这是 [borisovinfra/Sakura-Switch](https://github.com/borisovinfra/Sakura-Switch) 的简体中文本地化分支。界面、状态提示、错误信息与对话框已全部翻译为简体中文，并新增 `zh-Hans` 语言包。原始项目版权归 Amir Borisov 所有，授权条款见文末。
+> **关于本文件**：这是 [README.md](README.md) 的简体中文翻译。界面、状态提示、错误信息与对话框均已支持简体中文（`zh-Hans` 语言包），语言随 macOS 系统设置自动切换。
 
 ---
 
@@ -236,14 +236,14 @@ Sakura Switch 是一个自带运行依赖的独立应用，MTP 所需的组件�
 4. 把 `Sakura Switch.app` 移动到 `应用程序`（Applications）文件夹。
 5. 启动应用。
 
-### 从源码构建（本中文化分支）
+### 从源码构建
 
 ```bash
 brew install libmtp libusb   # 仅构建机需要
-git clone <本仓库地址>
+git clone https://github.com/borisovinfra/Sakura-Switch.git
 cd Sakura-Switch
-./scripts/build-app.sh --version=1.1.3-zh   # 生成 build/Sakura Switch.app
-./scripts/build-app.sh --version=1.1.3-zh --install   # 可选：安装到 /Applications
+./scripts/build-app.sh --version=1.1.3      # 生成 build/Sakura Switch.app
+./scripts/build-app.sh --version=1.1.3 --install   # 可选：安装到 /Applications
 ```
 
 ### 首次启动
