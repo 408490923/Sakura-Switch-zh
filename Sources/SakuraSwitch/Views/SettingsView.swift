@@ -7,30 +7,30 @@ struct SettingsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
 
-            Text("Настройки Sakura Switch")
+            Text(L10n.tr("settings.title"))
                 .font(.title)
 
             Divider()
 
-            GroupBox("Система") {
+            GroupBox(L10n.tr("settings.system")) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(
-                        "Версия Sakura Switch: \(BundleAppVersionProvider().displayVersion)"
+                        L10n.tr("settings.version_format", BundleAppVersionProvider().displayVersion)
                     )
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            GroupBox("Подключение") {
+            GroupBox(L10n.tr("settings.connection")) {
                 ConnectionStatusView(
                     isConnected: appState.isDeviceConnected,
                     mode: appState.coordinator.transportMode
                 )
             }
 
-            GroupBox("Диагностика") {
+            GroupBox(L10n.tr("settings.diagnostics")) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Расширенные логи: включены")
+                    Text(L10n.tr("settings.verbose_logs_on"))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

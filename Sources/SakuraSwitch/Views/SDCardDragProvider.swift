@@ -189,7 +189,7 @@ final class DragSourceNSView:
                     code: 1,
                     userInfo: [
                         NSLocalizedDescriptionKey:
-                            "Не удалось подготовить объект для копирования"
+                            L10n.tr("sd.drag.prepare_failed")
                     ]
                 )
             )

@@ -77,7 +77,7 @@ public final class ModInstaller {
             "/atmosphere/contents/\(mod.titleID)"
 
         progress(
-            "📦 Подготовка установки"
+            String(localized: "mods.progress.preparing", bundle: .main)
         )
 
         log(
@@ -85,7 +85,7 @@ public final class ModInstaller {
         )
 
         progress(
-            "📤 Загрузка мода"
+            String(localized: "mods.progress.uploading", bundle: .main)
         )
 
         NSLog("🌸 CALL DIRECTORY UPLOAD \(mod.payloadRoot.path)")
@@ -98,7 +98,7 @@ public final class ModInstaller {
         NSLog("🌸 DIRECTORY UPLOAD RETURNED")
 
         progress(
-            "✅ Мод установлен"
+            String(localized: "mods.progress.installed", bundle: .main)
         )
 
         log(

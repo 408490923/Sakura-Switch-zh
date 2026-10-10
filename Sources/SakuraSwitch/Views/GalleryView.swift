@@ -72,7 +72,7 @@ struct GalleryView: View {
 
             VStack(alignment: .leading, spacing: 2) {
 
-                Text("Галерея")
+                Text(L10n.tr("gallery.title"))
                     .font(.title2.weight(.semibold))
 
                 Text("Sakura Gallery")
@@ -88,7 +88,7 @@ struct GalleryView: View {
                 }
             } label: {
                 Label(
-                    "Обновить",
+                    L10n.tr("gallery.refresh"),
                     systemImage: "arrow.clockwise"
                 )
             }
@@ -110,13 +110,13 @@ struct GalleryView: View {
         if isLoadingGames {
 
             loadingView(
-                "Загрузка галереи..."
+                L10n.tr("gallery.loading")
             )
 
         } else if let gamesError {
 
             errorView(
-                title: "Не удалось открыть галерею",
+                title: L10n.tr("gallery.open_failed"),
                 message: gamesError
             ) {
                 Task {
@@ -166,11 +166,11 @@ struct GalleryView: View {
                 )
                 .foregroundStyle(.secondary)
 
-            Text("Галерея пуста")
+            Text(L10n.tr("gallery.empty"))
                 .font(.headline)
 
             Text(
-                "В Album DBI не найдено фотографий или видео."
+                L10n.tr("gallery.empty_hint")
             )
             .font(.caption)
             .foregroundStyle(.secondary)
@@ -255,13 +255,13 @@ struct GalleryView: View {
                 if isLoadingMedia {
 
                     loadingView(
-                        "Загрузка медиа..."
+                        L10n.tr("gallery.media_loading")
                     )
 
                 } else if let mediaError {
 
                     errorView(
-                        title: "Не удалось открыть альбом",
+                        title: L10n.tr("gallery.album_open_failed"),
                         message: mediaError
                     ) {
                         Task {
@@ -284,7 +284,7 @@ struct GalleryView: View {
                             )
                             .foregroundStyle(.secondary)
 
-                        Text("Нет медиа")
+                        Text(L10n.tr("gallery.no_media"))
                             .font(.headline)
                     }
                     .frame(
@@ -329,11 +329,11 @@ struct GalleryView: View {
                     )
                     .foregroundStyle(.secondary)
 
-                Text("Выберите игру")
+                Text(L10n.tr("gallery.select_game"))
                     .font(.headline)
 
                 Text(
-                    "Справа появятся фотографии и видео из Album."
+                    L10n.tr("gallery.select_game_hint")
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -385,8 +385,8 @@ struct GalleryView: View {
 
                             Text(
                                 isVideo(media)
-                                ? "Видео"
-                                : "Фото"
+                                ? L10n.tr("gallery.video")
+                                : L10n.tr("gallery.photo")
                             )
 
                             Text("•")
@@ -456,13 +456,13 @@ struct GalleryView: View {
                 if isLoadingPreview {
 
                     loadingView(
-                        "Загрузка медиа..."
+                        L10n.tr("gallery.media_loading")
                     )
 
                 } else if let previewError {
 
                     errorView(
-                        title: "Не удалось загрузить медиа",
+                        title: L10n.tr("gallery.media_load_failed"),
                         message: previewError
                     ) {
                         Task {
@@ -513,7 +513,7 @@ struct GalleryView: View {
                             )
                             .foregroundStyle(.secondary)
 
-                        Text("Превью недоступно")
+                        Text(L10n.tr("gallery.preview_unavailable"))
                             .font(.headline)
                     }
                     .frame(
@@ -536,11 +536,11 @@ struct GalleryView: View {
                     )
                     .foregroundStyle(.secondary)
 
-                Text("Выберите фото или видео")
+                Text(L10n.tr("gallery.select_media"))
                     .font(.headline)
 
                 Text(
-                    "Здесь появится предварительный просмотр."
+                    L10n.tr("gallery.select_media_hint")
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -581,7 +581,7 @@ struct GalleryView: View {
                     )
                     .foregroundStyle(.secondary)
 
-                Text("Видео недоступно")
+                Text(L10n.tr("gallery.video_unavailable"))
                     .font(.headline)
             }
             .frame(
@@ -627,7 +627,7 @@ struct GalleryView: View {
                 exportSelectedMedia()
             } label: {
                 Label(
-                    "Сохранить на Mac",
+                    L10n.tr("gallery.save_to_mac"),
                     systemImage:
                         "square.and.arrow.down"
                 )
@@ -693,7 +693,7 @@ struct GalleryView: View {
                     }
 
             appState.coordinator.log(
-                "Sakura Gallery: найдено альбомов игр: \(albumGames.count)",
+                L10n.tr("gallery.log.albums_found", albumGames.count),
                 level: .info
             )
 
@@ -703,7 +703,7 @@ struct GalleryView: View {
                 error.localizedDescription
 
             appState.coordinator.log(
-                "Ошибка Sakura Gallery: \(error.localizedDescription)",
+                L10n.tr("gallery.log.error", error.localizedDescription),
                 level: .error
             )
         }
@@ -765,7 +765,7 @@ struct GalleryView: View {
                     }
 
             appState.coordinator.log(
-                "Sakura Gallery: \(game.name) — медиа: \(mediaItems.count)",
+                L10n.tr("gallery.log.media_found", game.name, mediaItems.count),
                 level: .info
             )
 
@@ -775,7 +775,7 @@ struct GalleryView: View {
                 error.localizedDescription
 
             appState.coordinator.log(
-                "Ошибка Sakura Gallery: \(error.localizedDescription)",
+                L10n.tr("gallery.log.error", error.localizedDescription),
                 level: .error
             )
         }
@@ -906,7 +906,7 @@ struct GalleryView: View {
             }
 
             appState.coordinator.log(
-                "Sakura Gallery: загружено \(media.name)",
+                L10n.tr("gallery.log.loaded", media.name),
                 level: .info
             )
 
@@ -916,7 +916,7 @@ struct GalleryView: View {
                 error.localizedDescription
 
             appState.coordinator.log(
-                "Ошибка Sakura Gallery Preview: \(error.localizedDescription)",
+                L10n.tr("gallery.log.preview_error", error.localizedDescription),
                 level: .error
             )
         }
@@ -939,7 +939,7 @@ struct GalleryView: View {
         let panel = NSSavePanel()
 
         panel.title =
-            "Сохранить медиа из Sakura Gallery"
+            L10n.tr("gallery.save_panel_title")
 
         panel.nameFieldStringValue =
             media.name
@@ -973,12 +973,12 @@ struct GalleryView: View {
             )
 
             exportStatus =
-                "Сохранено: \(destination.path)"
+                L10n.tr("gallery.saved", destination.path)
 
             exportError = nil
 
             appState.coordinator.log(
-                "Sakura Gallery: экспортировано — \(destination.path)",
+                L10n.tr("gallery.log.exported", destination.path),
                 level: .info
             )
 
@@ -987,7 +987,7 @@ struct GalleryView: View {
             exportStatus = nil
 
             exportError =
-                "Ошибка сохранения: \(error.localizedDescription)"
+                L10n.tr("gallery.save_error", error.localizedDescription)
         }
     }
 
@@ -1157,7 +1157,7 @@ struct GalleryView: View {
                 .textSelection(.enabled)
 
             Button(
-                "Повторить",
+                L10n.tr("gallery.retry"),
                 action: retry
             )
         }
@@ -1182,11 +1182,11 @@ struct GalleryView: View {
 
             case .albumStorageNotFound:
                 return
-                    "Хранилище Album не найдено. Убедитесь, что на Switch запущен DBI MTP responder."
+                    L10n.tr("gallery.error.album_not_found")
 
             case .imageDecodeFailed:
                 return
-                    "Файл получен со Switch, но macOS не смогла декодировать изображение."
+                    L10n.tr("gallery.error.image_decode_failed")
             }
         }
     }

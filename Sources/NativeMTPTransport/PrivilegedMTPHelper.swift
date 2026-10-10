@@ -231,23 +231,23 @@ public enum PrivilegedMTPHelper {
 
             case .bundledHelperMissing:
                 return
-                    "Встроенный MTP helper не найден."
+                    String(localized: "mtp.helper.not_found", bundle: .main)
 
             case .bundledFrameworksMissing:
                 return
-                    "Встроенные библиотеки MTP не найдены."
+                    String(localized: "mtp.helper.libraries_missing", bundle: .main)
 
             case .authorizationFailed(let output):
                 if output.isEmpty {
                     return
-                        "Не удалось получить права администратора."
+                        String(localized: "mtp.helper.no_admin_rights", bundle: .main)
                 }
 
                 return output
 
             case .installationFailed:
                 return
-                    "MTP helper не был установлен."
+                    String(localized: "mtp.helper.not_installed", bundle: .main)
             }
         }
     }

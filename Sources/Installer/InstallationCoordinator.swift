@@ -168,7 +168,7 @@ public final class InstallationCoordinator {
                 guard sourceURL.isFileURL else {
                     continuation.resume(
                         throwing: MTPError.transferFailed(
-                            "Источник не является локальным файлом"
+                            String(localized: "install.error.source_not_local_file", bundle: .main)
                         )
                     )
                     return
@@ -184,7 +184,7 @@ public final class InstallationCoordinator {
 
                     continuation.resume(
                         throwing: MTPError.transferFailed(
-                            "Источник должен быть обычным файлом"
+                            String(localized: "install.error.source_not_file", bundle: .main)
                         )
                     )
                     return
@@ -264,7 +264,7 @@ public final class InstallationCoordinator {
                     else {
                         throw MTPError.transferFailed(
                             output.isEmpty
-                                ? "Не удалось передать файл на Switch"
+                                ? String(localized: "install.error.send_file_failed", bundle: .main)
                                 : output
                         )
                     }
@@ -344,7 +344,7 @@ public final class InstallationCoordinator {
 
                         throw MTPError.transferFailed(
                             output.isEmpty
-                                ? "Не удалось скачать файл со Switch"
+                                ? String(localized: "install.error.download_file_failed", bundle: .main)
                                 : output
                         )
                     }
@@ -400,7 +400,7 @@ public final class InstallationCoordinator {
                               .contains("OK") else {
                         throw MTPError.transferFailed(
                             output.isEmpty
-                                ? "Не удалось скачать файл Gallery со Switch"
+                                ? String(localized: "install.error.download_gallery_failed", bundle: .main)
                                 : output
                         )
                     }
@@ -542,7 +542,7 @@ public final class InstallationCoordinator {
                 itemName
             ],
             fallbackError:
-                "Не удалось удалить объект с Switch"
+                String(localized: "install.error.delete_failed", bundle: .main)
         )
     }
 
@@ -576,7 +576,7 @@ public final class InstallationCoordinator {
             isDirectory.boolValue
         else {
             throw MTPError.transferFailed(
-                "Источник должен быть локальной папкой"
+                String(localized: "install.error.source_not_folder", bundle: .main)
             )
         }
 
@@ -656,7 +656,7 @@ public final class InstallationCoordinator {
 
                     guard existing.isDirectory else {
                         throw MTPError.transferFailed(
-                            "Конфликт: \(remotePath)/\(name) уже существует как файл"
+                            String(format: String(localized: "install.conflict.folder_is_file", bundle: .main), remotePath, name)
                         )
                     }
 
@@ -691,7 +691,7 @@ public final class InstallationCoordinator {
 
             if existing != nil {
                 throw MTPError.transferFailed(
-                    "Конфликт: файл \(remotePath)/\(name) уже существует"
+                    String(format: String(localized: "install.conflict.file_exists", bundle: .main), remotePath, name)
                 )
             }
 
@@ -735,7 +735,7 @@ public final class InstallationCoordinator {
 
         throw lastError ??
             MTPError.connectionFailed(
-                "Не удалось прочитать MTP-каталог"
+                String(localized: "install.error.read_mtp_directory", bundle: .main)
             )
     }
 
@@ -778,7 +778,7 @@ public final class InstallationCoordinator {
 
                     guard existing.isDirectory else {
                         throw MTPError.transferFailed(
-                            "Конфликт: \(parentPath)/\(folderName) уже существует как файл"
+                            String(format: String(localized: "install.conflict.folder_is_file", bundle: .main), parentPath, folderName)
                         )
                     }
 
@@ -804,7 +804,7 @@ public final class InstallationCoordinator {
 
         throw lastError ??
             MTPError.transferFailed(
-                "Не удалось создать папку"
+                String(localized: "install.error.create_folder", bundle: .main)
             )
     }
 
@@ -820,7 +820,7 @@ public final class InstallationCoordinator {
                 parentPath,
                 folderName
             ],
-            fallbackError: "Не удалось создать папку"
+            fallbackError: String(localized: "install.error.create_folder", bundle: .main)
         )
     }
 
@@ -837,7 +837,7 @@ public final class InstallationCoordinator {
                 oldName,
                 newName
             ],
-            fallbackError: "Не удалось переименовать объект"
+            fallbackError: String(localized: "install.error.rename_failed", bundle: .main)
         )
     }
 
@@ -953,7 +953,7 @@ public final class InstallationCoordinator {
 
                         throw MTPError.connectionFailed(
                             output.isEmpty
-                                ? "Не удалось прочитать MTP-хранилище"
+                                ? String(localized: "install.error.read_mtp_storage", bundle: .main)
                                 : output
                         )
                     }
@@ -1102,7 +1102,7 @@ public final class InstallationCoordinator {
                     else {
                         throw MTPError.connectionFailed(
                             output.isEmpty
-                                ? "Не удалось получить список MTP-хранилищ"
+                                ? String(localized: "install.error.list_mtp_storages", bundle: .main)
                                 : output
                         )
                     }
@@ -1230,7 +1230,7 @@ public final class InstallationCoordinator {
     public func findSavesStorage() async throws -> MTPStorage {
         guard let storage = try await findMTPStorageViaHelper(named: "Saves") else {
             throw MTPError.connectionFailed(
-                "Хранилище Saves не найдено. Убедитесь, что на Switch запущен DBI MTP responder."
+                String(localized: "install.error.saves_storage_missing", bundle: .main)
             )
         }
 

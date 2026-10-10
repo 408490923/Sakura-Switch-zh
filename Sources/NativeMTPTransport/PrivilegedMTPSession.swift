@@ -62,7 +62,7 @@ public final class PrivilegedMTPSession: @unchecked Sendable {
             stagedFiles.append(FileToInstall(path: dest.path, name: file.name, size: file.size))
         }
 
-        onLog("Запуск MTP helper без запроса пароля...")
+        onLog(String(localized: "mtp.helper.starting", bundle: .main))
 
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")

@@ -215,7 +215,7 @@ struct ContentView: View {
 
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Сохранения")
+                    Text(L10n.tr("saves.title"))
                         .font(.title2.weight(.semibold))
 
                     Text("Sakura Saves")
@@ -230,7 +230,7 @@ struct ContentView: View {
                         await loadSaveGames()
                     }
                 } label: {
-                    Label("Обновить", systemImage: "arrow.clockwise")
+                    Label(L10n.tr("saves.refresh"), systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(.bordered)
                 .disabled(isLoadingSaves)
@@ -242,7 +242,7 @@ struct ContentView: View {
             if isLoadingSaves {
                 VStack(spacing: 10) {
                     ProgressView()
-                    Text("Загрузка сохранений...")
+                    Text(L10n.tr("saves.loading"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -254,7 +254,7 @@ struct ContentView: View {
                         .font(.system(size: 28))
                         .foregroundStyle(.orange)
 
-                    Text("Не удалось загрузить сохранения")
+                    Text(L10n.tr("saves.load_failed"))
                         .font(.headline)
 
                     Text(savesError)
@@ -263,7 +263,7 @@ struct ContentView: View {
                         .multilineTextAlignment(.center)
                         .textSelection(.enabled)
 
-                    Button("Повторить") {
+                    Button(L10n.tr("saves.retry")) {
                         Task {
                             await loadSaveGames()
                         }
@@ -278,15 +278,15 @@ struct ContentView: View {
                         .font(.system(size: 30, weight: .light))
                         .foregroundStyle(.secondary)
 
-                    Text("Сохранения не загружены")
+                    Text(L10n.tr("saves.not_loaded"))
                         .font(.headline)
 
-                    Text("Подключите Switch с запущенным DBI MTP responder и нажмите «Обновить».")
+                    Text(L10n.tr("saves.connect_hint_refresh"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
 
-                    Button("Загрузить сохранения") {
+                    Button(L10n.tr("saves.load_button")) {
                         Task {
                             await loadSaveGames()
                         }
@@ -331,14 +331,14 @@ struct ContentView: View {
             saveGames = try await appState.coordinator.loadInstalledSaveGames()
 
             appState.coordinator.log(
-                "Sakura Saves: найдено игр с сохранениями: \(saveGames.count)",
+                L10n.tr("saves.log.games_found", saveGames.count),
                 level: .info
             )
         } catch {
             savesError = error.localizedDescription
 
             appState.coordinator.log(
-                "Ошибка Sakura Saves: \(error.localizedDescription)",
+                L10n.tr("saves.log.error", error.localizedDescription),
                 level: .error
             )
         }
@@ -541,7 +541,8 @@ struct ContentView: View {
                                 : (
                                     result.contains("Проверка") ||
                                     result.contains("Checking") ||
-                                    result.contains("確認")
+                                    result.contains("確認") ||
+                                    result.contains("检查")
                                 )
                                     ? .secondary
                                     : .red

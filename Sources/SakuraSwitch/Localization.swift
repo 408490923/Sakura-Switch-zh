@@ -5,6 +5,18 @@ enum L10n {
         String(localized: String.LocalizationValue(key), bundle: .main)
     }
 
+    /// Localized string for a runtime key. Used where a view (or a log message
+    /// built outside the presentation layer) needs a value without a typed
+    /// accessor.
+    static func tr(_ key: String) -> String {
+        text(key)
+    }
+
+    /// Localized format string with arguments, e.g. `L10n.tr("key", path)`.
+    static func tr(_ key: String, _ arguments: CVarArg...) -> String {
+        String(format: text(key), arguments: arguments)
+    }
+
     // MARK: - Compatibility
 
     static var navInstallation: String { sidebarInstallation }

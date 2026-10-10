@@ -89,7 +89,15 @@ struct LogView: View {
             "соединение mtp установлено успешно",
             "проверка sd-карты завершена успешно",
             "подключён",
-            "подключено"
+            "подключено",
+            "success",
+            "sd card is available",
+            "mtp connection established successfully",
+            "sd card check completed successfully",
+            "connected",
+            "成功",
+            "sd 卡可用",
+            "已连接"
         ]
 
         if successMarkers.contains(where: { message.contains($0) }) {
@@ -103,7 +111,11 @@ struct LogView: View {
             "не найдена",
             "не найдено",
             "failed",
-            "error"
+            "error",
+            "错误",
+            "失败",
+            "无法",
+            "未找到"
         ]
 
         if errorMarkers.contains(where: { message.contains($0) }) {

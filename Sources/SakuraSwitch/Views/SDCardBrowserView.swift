@@ -54,7 +54,7 @@ struct SDCardBrowserView: View {
                 }
                 .buttonStyle(.bordered)
                 .disabled(currentPath == "/" || isLoading)
-                .help("Назад")
+                .help(L10n.tr("common.back"))
 
                 HStack(spacing: 6) {
                     Image(systemName: "externaldrive.fill")
@@ -80,7 +80,7 @@ struct SDCardBrowserView: View {
                 }
                 .buttonStyle(.bordered)
                 .disabled(isLoading || isUploading || isDeleting)
-                .help("Новая папка")
+                .help(L10n.tr("sd.new_folder"))
 
                 Button {
                     Task {
@@ -91,7 +91,7 @@ struct SDCardBrowserView: View {
                 }
                 .buttonStyle(.bordered)
                 .disabled(isLoading)
-                .help("Обновить")
+                .help(L10n.tr("common.refresh"))
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
@@ -103,7 +103,7 @@ struct SDCardBrowserView: View {
             if isLoading && items.isEmpty {
                 VStack(spacing: 10) {
                     ProgressView()
-                    Text("Чтение SD-карты...")
+                    Text(L10n.tr("sd.reading"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -120,7 +120,7 @@ struct SDCardBrowserView: View {
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
 
-                    Button("Повторить") {
+                    Button(L10n.tr("common.retry")) {
                         Task {
                             await reload()
                         }
@@ -184,7 +184,7 @@ struct SDCardBrowserView: View {
                             }
                         } label: {
                             Label(
-                                item.isDirectory ? "Открыть папку" : "Открыть",
+                                item.isDirectory ? L10n.tr("common.open_folder") : L10n.tr("common.open"),
                                 systemImage: item.isDirectory ? "folder" : "doc"
                             )
                         }
@@ -193,7 +193,7 @@ struct SDCardBrowserView: View {
                             itemPendingRename = item
                             renameText = item.name
                         } label: {
-                            Label("Переименовать", systemImage: "pencil")
+                            Label(L10n.tr("common.rename"), systemImage: "pencil")
                         }
 
                         Divider()
@@ -201,7 +201,7 @@ struct SDCardBrowserView: View {
                         Button(role: .destructive) {
                             itemPendingDeletion = item
                         } label: {
-                            Label("Удалить", systemImage: "trash")
+                            Label(L10n.tr("common.delete"), systemImage: "trash")
                         }
                     }
                 }
@@ -252,18 +252,18 @@ struct SDCardBrowserView: View {
             handleDrop(providers)
         }
         .alert(
-            "Удалить объект?",
+            L10n.tr("sd.delete.title"),
             isPresented: Binding(
                 get: { itemPendingDeletion != nil },
                 set: { if !$0 { itemPendingDeletion = nil } }
             ),
             presenting: itemPendingDeletion
         ) { item in
-            Button("Отмена", role: .cancel) {
+            Button(L10n.tr("common.cancel"), role: .cancel) {
                 itemPendingDeletion = nil
             }
 
-            Button("Удалить", role: .destructive) {
+            Button(L10n.tr("common.delete"), role: .destructive) {
                 Task {
                     await deleteItem(item)
                 }
@@ -271,71 +271,71 @@ struct SDCardBrowserView: View {
         } message: { item in
             Text(
                 item.isDirectory
-                    ? "Удалить папку «\(item.name)» со всем содержимым?"
-                    : "Удалить файл «\(item.name)»?"
+                    ? L10n.tr("sd.delete.folder_message", item.name)
+                    : L10n.tr("sd.delete.file_message", item.name)
             )
         }
         .alert(
-            "Объект уже существует",
+            L10n.tr("sd.conflict.title"),
             isPresented: Binding(
                 get: { uploadConflict != nil },
                 set: { if !$0 { uploadConflict = nil } }
             ),
             presenting: uploadConflict
         ) { conflict in
-            Button("Отмена", role: .cancel) {
+            Button(L10n.tr("common.cancel"), role: .cancel) {
                 uploadConflict = nil
             }
 
-            Button("Сохранить оба") {
+            Button(L10n.tr("sd.conflict.keep_both")) {
                 Task {
                     await resolveConflictKeepBoth(conflict)
                 }
             }
 
-            Button("Заменить", role: .destructive) {
+            Button(L10n.tr("sd.conflict.replace"), role: .destructive) {
                 Task {
                     await resolveConflictReplace(conflict)
                 }
             }
         } message: { conflict in
             Text(
-                "В папке уже есть объект «\(conflict.existingItem.name)»."
+                L10n.tr("sd.conflict.message", conflict.existingItem.name)
             )
         }
         .alert(
-            "Файл изменён",
+            L10n.tr("sd.edit.changed_title"),
             isPresented: Binding(
                 get: { pendingEdit != nil },
                 set: { if !$0 { pendingEdit = nil } }
             ),
             presenting: pendingEdit
         ) { edit in
-            Button("Не сохранять", role: .destructive) {
-                editingStatus = "Изменения не отправлены на Switch"
+            Button(L10n.tr("sd.edit.discard"), role: .destructive) {
+                editingStatus = L10n.tr("sd.edit.not_sent")
                 pendingEdit = nil
             }
 
-            Button("Сохранить") {
+            Button(L10n.tr("common.save")) {
                 Task {
                     await savePendingEdit(edit)
                 }
             }
 
-            Button("Отмена", role: .cancel) {
+            Button(L10n.tr("common.cancel"), role: .cancel) {
                 pendingEdit = nil
             }
         } message: { edit in
             Text(
-                "Файл «\(edit.remoteName)» был изменён на Mac. Сохранить изменения обратно на Switch?"
+                L10n.tr("sd.edit.save_prompt", edit.remoteName)
             )
         }
         .sheet(isPresented: $showCreateFolderDialog) {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Новая папка")
+                Text(L10n.tr("sd.new_folder"))
                     .font(.headline)
 
-                TextField("Имя папки", text: $newFolderName)
+                TextField(L10n.tr("sd.new_folder_placeholder"), text: $newFolderName)
                     .textFieldStyle(.roundedBorder)
                     .onSubmit {
                         Task {
@@ -346,11 +346,11 @@ struct SDCardBrowserView: View {
                 HStack {
                     Spacer()
 
-                    Button("Отмена") {
+                    Button(L10n.tr("common.cancel")) {
                         showCreateFolderDialog = false
                     }
 
-                    Button("Создать") {
+                    Button(L10n.tr("common.create")) {
                         Task {
                             await createFolder()
                         }
@@ -373,10 +373,10 @@ struct SDCardBrowserView: View {
             )
         ) {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Переименовать")
+                Text(L10n.tr("common.rename"))
                     .font(.headline)
 
-                TextField("Новое имя", text: $renameText)
+                TextField(L10n.tr("sd.rename_placeholder"), text: $renameText)
                     .textFieldStyle(.roundedBorder)
                     .onSubmit {
                         Task {
@@ -387,11 +387,11 @@ struct SDCardBrowserView: View {
                 HStack {
                     Spacer()
 
-                    Button("Отмена") {
+                    Button(L10n.tr("common.cancel")) {
                         itemPendingRename = nil
                     }
 
-                    Button("Переименовать") {
+                    Button(L10n.tr("common.rename")) {
                         Task {
                             await renamePendingItem()
                         }
@@ -480,7 +480,7 @@ struct SDCardBrowserView: View {
         editWatcher?.cancel()
         errorMessage = nil
         editingFileName = item.name
-        editingStatus = "Открытие \(item.name)..."
+        editingStatus = L10n.tr("sd.opening", item.name)
 
         let parentPath = currentPath
 
@@ -499,7 +499,7 @@ struct SDCardBrowserView: View {
             editingFileName = nil
             editingStatus = nil
             errorMessage =
-                "Не удалось создать временную папку: \(error.localizedDescription)"
+                L10n.tr("sd.error.temp_folder", error.localizedDescription)
             return
         }
 
@@ -521,12 +521,12 @@ struct SDCardBrowserView: View {
                     code: 2001,
                     userInfo: [
                         NSLocalizedDescriptionKey:
-                            "macOS не смогла открыть файл «\(item.name)»"
+                            L10n.tr("sd.error.cannot_open", item.name)
                     ]
                 )
             }
 
-            editingStatus = "Открыт \(item.name)"
+            editingStatus = L10n.tr("sd.opened", item.name)
 
             let initialDate = modificationDate(localURL)
 
@@ -543,7 +543,7 @@ struct SDCardBrowserView: View {
             editingFileName = nil
             editingStatus = nil
             errorMessage =
-                "Ошибка открытия: \(error.localizedDescription)"
+                L10n.tr("sd.error.open", error.localizedDescription)
         }
     }
 
@@ -596,7 +596,7 @@ struct SDCardBrowserView: View {
             )
 
             editingStatus =
-                "Файл \(remoteName) изменён — ожидается подтверждение"
+                L10n.tr("sd.edit.pending", remoteName)
 
             return
         }
@@ -607,7 +607,7 @@ struct SDCardBrowserView: View {
         _ edit: PendingEdit
     ) async {
         editingStatus =
-            "Синхронизация \(edit.remoteName) → Switch..."
+            L10n.tr("sd.syncing", edit.remoteName)
 
         do {
             try await coordinator.deleteSDCardItem(
@@ -621,7 +621,7 @@ struct SDCardBrowserView: View {
             )
 
             editingStatus =
-                "Изменения \(edit.remoteName) сохранены на Switch"
+                L10n.tr("sd.synced", edit.remoteName)
 
             pendingEdit = nil
 
@@ -630,9 +630,9 @@ struct SDCardBrowserView: View {
             }
 
         } catch {
-            editingStatus = "Ошибка синхронизации"
+            editingStatus = L10n.tr("sd.error.sync")
             errorMessage =
-                "Не удалось сохранить изменения на Switch: \(error.localizedDescription)"
+                L10n.tr("sd.error.save_changes", error.localizedDescription)
         }
     }
 
@@ -659,7 +659,7 @@ struct SDCardBrowserView: View {
 
         } catch {
             errorMessage =
-                "Ошибка создания папки: \(error.localizedDescription)"
+                L10n.tr("sd.error.create_folder", error.localizedDescription)
         }
     }
 
@@ -687,7 +687,7 @@ struct SDCardBrowserView: View {
 
         } catch {
             errorMessage =
-                "Ошибка переименования: \(error.localizedDescription)"
+                L10n.tr("sd.error.rename", error.localizedDescription)
         }
     }
 
@@ -717,7 +717,7 @@ struct SDCardBrowserView: View {
 
         } catch {
             errorMessage =
-                "Ошибка удаления: \(error.localizedDescription)"
+                L10n.tr("sd.error.delete", error.localizedDescription)
         }
     }
 
@@ -802,7 +802,7 @@ struct SDCardBrowserView: View {
                                     code: 1,
                                     userInfo: [
                                         NSLocalizedDescriptionKey:
-                                            "Не удалось получить путь к объекту"
+                                            L10n.tr("sd.error.item_path")
                                     ]
                                 )
                             )
@@ -845,7 +845,7 @@ struct SDCardBrowserView: View {
                                 code: 2,
                                 userInfo: [
                                     NSLocalizedDescriptionKey:
-                                        "На Switch уже существует файл с именем \(url.lastPathComponent)"
+                                        L10n.tr("sd.error.name_exists", url.lastPathComponent)
                                 ]
                             )
                         }
@@ -881,7 +881,7 @@ struct SDCardBrowserView: View {
                         code: 3,
                         userInfo: [
                             NSLocalizedDescriptionKey:
-                                "Источник не является обычным файлом или папкой"
+                                L10n.tr("sd.error.source_not_file")
                         ]
                     )
                 }
@@ -908,7 +908,7 @@ struct SDCardBrowserView: View {
         } catch {
 
             errorMessage =
-                "Ошибка копирования: \(error.localizedDescription)"
+                L10n.tr("sd.error.copy", error.localizedDescription)
         }
     }
 
@@ -943,7 +943,7 @@ struct SDCardBrowserView: View {
 
         } catch {
             errorMessage =
-                "Ошибка замены: \(error.localizedDescription)"
+                L10n.tr("sd.error.replace", error.localizedDescription)
         }
     }
 
@@ -1020,7 +1020,7 @@ struct SDCardBrowserView: View {
 
         } catch {
             errorMessage =
-                "Ошибка сохранения копии: \(error.localizedDescription)"
+                L10n.tr("sd.error.save_copy", error.localizedDescription)
         }
     }
 
@@ -1032,17 +1032,17 @@ struct SDCardBrowserView: View {
         }
 
         if isDeleting {
-            return "Удаление..."
+            return L10n.tr("sd.status.deleting")
         }
 
         if isUploading {
             return uploadFileName.map {
-                "Копирование \($0) → \(currentPath)"
-            } ?? "Копирование файла..."
+                L10n.tr("sd.status.copying", $0, currentPath)
+            } ?? L10n.tr("sd.status.copying_file")
         }
 
         if isLoading {
-            return "Чтение \(currentPath)"
+            return L10n.tr("sd.status.reading", currentPath)
         }
 
         return currentPath == "/"
