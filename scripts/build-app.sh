@@ -71,8 +71,18 @@ fi
 
 echo "Building bundled MTP helper..."
 
+# Homebrew installs libusb's public headers under $(brew --prefix)/include/libusb-1.0,
+# while pkg-config only advertises -I.../include/libusb-1.0 (which expects
+# <libusb.h>). The helper includes <libusb-1.0/libusb.h>, so Homebrew's include
+# root has to be added explicitly.
+BREW_INCLUDE_FLAG=()
+if command -v brew >/dev/null 2>&1; then
+    BREW_INCLUDE_FLAG=(-I"$(brew --prefix)/include")
+fi
+
 cc -O2 \
     "${HELPER_SOURCE}" \
+    ${BREW_INCLUDE_FLAG[@]+"${BREW_INCLUDE_FLAG[@]}"} \
     -o "${HELPER_BINARY}" \
     $(pkg-config --cflags --libs libmtp libusb-1.0)
 
